@@ -3,53 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel</title>
+<title>Kerala Lottery Admin</title>
 
 <style>
 
-body{
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
 height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-background:#111;
-font-family:Arial;
+background:
+linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),
+url('https://images.unsplash.com/photo-1518546305927-5a555bb7020d?q=80&w=1200&auto=format&fit=crop');
+background-size:cover;
+background-position:center;
+overflow:hidden;
 }
 
-.box{
-background:#222;
-padding:30px;
-border-radius:15px;
-width:300px;
+.card{
+width:350px;
+backdrop-filter:blur(15px);
+background:rgba(255,255,255,0.08);
+border:1px solid rgba(255,255,255,0.15);
+border-radius:20px;
+padding:35px 30px;
+box-shadow:0 10px 40px rgba(0,0,0,0.5);
+color:#fff;
+animation:fade 0.5s ease;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
 text-align:center;
-color:white;
+margin-bottom:10px;
+color:#25D366;
+}
+
+.sub{
+text-align:center;
+font-size:14px;
+opacity:0.8;
+margin-bottom:30px;
 }
 
 input{
 width:100%;
-padding:12px;
+padding:14px;
 margin-top:15px;
 border:none;
-border-radius:10px;
-font-size:16px;
+border-radius:12px;
+background:rgba(255,255,255,0.12);
+color:#fff;
+font-size:15px;
+outline:none;
+transition:0.3s;
+}
+
+input::placeholder{
+color:#ddd;
+}
+
+input:focus{
+background:rgba(255,255,255,0.18);
+transform:scale(1.02);
 }
 
 button{
 width:100%;
-padding:12px;
-margin-top:15px;
+padding:14px;
+margin-top:20px;
 border:none;
-border-radius:10px;
+border-radius:12px;
 background:#25D366;
-color:white;
+color:#fff;
 font-size:16px;
+font-weight:bold;
 cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 20px rgba(37,211,102,0.4);
+}
+
+#error{
+margin-top:15px;
+color:#ff4d4d;
+text-align:center;
+font-size:14px;
 }
 
 #msg{
 margin-top:15px;
-color:lime;
+color:#00ff99;
+text-align:center;
+font-size:14px;
+}
+
+#adminPanel{
+display:none;
+}
+
+.status{
+margin-top:20px;
+padding:12px;
+border-radius:10px;
+background:rgba(255,255,255,0.08);
+font-size:14px;
+text-align:center;
 }
 
 </style>
@@ -57,15 +138,38 @@ color:lime;
 </head>
 <body>
 
-<div class="box">
+<div class="card">
 
-<h2>Update WhatsApp</h2>
+<div class="logo">KERALA ADMIN</div>
+<div class="sub">Secure WhatsApp Control Panel</div>
 
-<input type="text" id="wa" placeholder="919999999999">
+<!-- LOGIN -->
 
-<button onclick="saveWA()">Save Number</button>
+<div id="loginBox">
+
+<input type="password" id="password" placeholder="Enter Admin Password">
+
+<button onclick="login()">LOGIN</button>
+
+<div id="error"></div>
+
+</div>
+
+<!-- ADMIN PANEL -->
+
+<div id="adminPanel">
+
+<input type="text" id="wa" placeholder="Enter WhatsApp Number">
+
+<button onclick="saveWA()">UPDATE NUMBER</button>
 
 <div id="msg"></div>
+
+<div class="status">
+🟢 Firebase Connected
+</div>
+
+</div>
 
 </div>
 
@@ -103,15 +207,50 @@ const app = initializeApp(firebaseConfig);
 
 const db = getDatabase(app);
 
+/* CHANGE PASSWORD HERE */
+
+const ADMIN_PASSWORD = "Kerala@2026";
+
+/* LOGIN */
+
+window.login = function(){
+
+const pass = document.getElementById('password').value;
+
+if(pass === ADMIN_PASSWORD){
+
+document.getElementById('loginBox').style.display = "none";
+
+document.getElementById('adminPanel').style.display = "block";
+
+}else{
+
+document.getElementById('error').innerHTML = "Wrong Password";
+
+}
+
+}
+
+/* SAVE NUMBER */
+
 window.saveWA = function(){
 
 const number = document.getElementById('wa').value;
 
-set(ref(db, "site/whatsapp"), number)
+if(number === ""){
+
+alert("Enter WhatsApp Number");
+
+return;
+
+}
+
+set(ref(db,"site/whatsapp"), number)
 
 .then(()=>{
 
-document.getElementById('msg').innerHTML = "Number Updated Successfully";
+document.getElementById('msg').innerHTML =
+"✅ WhatsApp Number Updated Successfully";
 
 console.log("Saved:", number);
 
