@@ -907,27 +907,37 @@ function removeChip(num){
 }
 
 function openWA(){
-  if(selected.size<MIN_TICKETS){
-    const ticketSection=document.getElementById('ticketGrid');
-    ticketSection.scrollIntoView({behavior:'smooth'});
-    const w=document.getElementById('minWarning');
-    w.style.display='block';
-    w.style.animation='none';
-    requestAnimationFrame(()=>{w.style.animation='shake 0.4s ease';});
-    return;
-  }
-  spawnConfetti();
-  const ticketList=Array.from(selected).join('\n');
-  const total=selected.size*TICKET_PRICE;
-  const msg=encodeURIComponent(
-    '🏆 *KERALA ROYAL LOTTERY BOOKING*\n\n'+
-    '🎟️ *Tickets Selected ('+selected.size+'):*\n'+ticketList+'\n\n'+
-    '💰 *Total: ₹'+total.toLocaleString('en-IN')+'*\n\n'+
-    '⚡ Please confirm my booking!'
-  );
-  setTimeout(() => {
-  window.open('https://wa.me/' + WA + '?text=' + msg, '_blank');
+
+if(selected.size < MIN_TICKETS){
+
+document.getElementById('minWarning').style.display='flex';
+
+return;
+
+}
+
+const ticketList = Array.from(selected).join('\n');
+
+const total = selected.size * TICKET_PRICE;
+
+const msg = encodeURIComponent(
+'🏆 KERALA ROYAL LOTTERY BOOKING\n\n'+
+'🎟 Tickets Selected ('+selected.size+'):\n'+
+ticketList+'\n\n'+
+'💰 Total: ₹'+total.toLocaleString('en-IN')+'\n\n'+
+'Please confirm my booking!'
+);
+
+setTimeout(() => {
+
+window.open(
+'https://wa.me/' + WA + '?text=' + msg,
+'_blank'
+);
+
 }, 800);
+
+}
 
 function submitWhatsapp(){ openWA(); }
 
