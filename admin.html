@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+
+<style>
+
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#111;
+font-family:Arial;
+}
+
+.box{
+background:#222;
+padding:30px;
+border-radius:15px;
+width:300px;
+text-align:center;
+color:white;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+font-size:16px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+background:#25D366;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+#msg{
+margin-top:15px;
+color:lime;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="box">
+
+<h2>Update WhatsApp</h2>
+
+<input type="text" id="wa" placeholder="919999999999">
+
+<button onclick="saveWA()">Save Number</button>
+
+<div id="msg"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getDatabase,
+ref,
+set
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyDi0DhAo5g9iYQQ0d4AHyMu7Y5ZJGMHBXg",
+
+authDomain: "kerela-lottery-v7.firebaseapp.com",
+
+databaseURL: "https://kerela-lottery-v7-default-rtdb.firebaseio.com",
+
+projectId: "kerela-lottery-v7",
+
+storageBucket: "kerela-lottery-v7.firebasestorage.app",
+
+messagingSenderId: "476358443982",
+
+appId: "1:476358443982:web:901c1acf5a2c2c43e6219f",
+
+measurementId: "G-F9MWWTM7W5"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+
+window.saveWA = function(){
+
+const number = document.getElementById('wa').value;
+
+set(ref(db, "site/whatsapp"), number)
+
+.then(()=>{
+
+document.getElementById('msg').innerHTML = "Number Updated Successfully";
+
+console.log("Saved:", number);
+
+})
+
+.catch((error)=>{
+
+alert(error);
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
