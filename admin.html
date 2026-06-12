@@ -147,7 +147,7 @@ text-align:center;
 
 <div id="loginBox">
 
-<input type="password" id="password" placeholder="Enter Admin Password">
+<input type="password" id="password" placeholder="Enter Password">
 
 <button onclick="login()">LOGIN</button>
 
@@ -207,15 +207,15 @@ const app = initializeApp(firebaseConfig);
 
 const db = getDatabase(app);
 
-/* CHANGE PASSWORD HERE */
+/* PASSWORD */
 
 const ADMIN_PASSWORD = "12345";
 
-/* LOGIN */
+/* LOGIN FUNCTION */
 
 window.login = function(){
 
-const pass = document.getElementById('password').value;
+const pass = document.getElementById('password').value.trim();
 
 if(pass === ADMIN_PASSWORD){
 
@@ -231,11 +231,11 @@ document.getElementById('error').innerHTML = "Wrong Password";
 
 }
 
-/* SAVE NUMBER */
+/* SAVE WHATSAPP NUMBER */
 
 window.saveWA = function(){
 
-const number = document.getElementById('wa').value;
+const number = document.getElementById('wa').value.trim();
 
 if(number === ""){
 
