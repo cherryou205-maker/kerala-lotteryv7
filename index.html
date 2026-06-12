@@ -819,7 +819,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);mi
 </div>
 
 <script>
-const WA_NUMBER = '917479489566';
+var WA = '';
 const TICKET_PRICE = 40;
 const MIN_TICKETS = 3;
 let selected = new Set();
@@ -925,8 +925,9 @@ function openWA(){
     '💰 *Total: ₹'+total.toLocaleString('en-IN')+'*\n\n'+
     '⚡ Please confirm my booking!'
   );
-  setTimeout(()=>{window.open('https://wa.me/'+WA_NUMBER+'?text='+msg,'_blank');},800);
-}
+  setTimeout(() => {
+  window.open('https://wa.me/' + WA + '?text=' + msg, '_blank');
+}, 800);
 
 function submitWhatsapp(){ openWA(); }
 
@@ -956,5 +957,50 @@ function spawnMini(el){
   }
 }
 </script>
+  <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getDatabase,
+ref,
+onValue
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyDi0DhAo5g9iYQQ0d4AHyMu7Y5ZJGMHBXg",
+
+authDomain: "kerela-lottery-v7.firebaseapp.com",
+
+databaseURL: "https://kerela-lottery-v7-default-rtdb.firebaseio.com",
+
+projectId: "kerela-lottery-v7",
+
+storageBucket: "kerela-lottery-v7.firebasestorage.app",
+
+messagingSenderId: "476358443982",
+
+appId: "1:476358443982:web:901c1acf5a2c2c43e6219f",
+
+measurementId: "G-F9MWWTM7W5"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+
+const waRef = ref(db, "site/whatsapp");
+
+onValue(waRef, (snapshot) => {
+
+WA = snapshot.val();
+
+console.log("Live WhatsApp Number:", WA);
+
+});
+
+  </script>
 </body>
 </html>
